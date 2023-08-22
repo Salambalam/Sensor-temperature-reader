@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.chemakin.TemperatureSensor.dto.SensorDTO;
 import ru.chemakin.TemperatureSensor.models.Sensor;
 import ru.chemakin.TemperatureSensor.services.SensorService;
+import ru.chemakin.TemperatureSensor.util.SensorDTOValidator;
 import ru.chemakin.TemperatureSensor.util.SensorErrorResponse;
 import ru.chemakin.TemperatureSensor.util.SensorNotCreatedException;
 
@@ -22,9 +23,11 @@ import java.util.List;
 public class SensorController {
     private final ModelMapper mapper;
     private final SensorService sensorService;
+    private final SensorDTOValidator sensorDTOValidator;
     @PostMapping("/registration")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid SensorDTO sensorDTO,
                                              BindingResult bindingResult){
+        sensorDTOValidator.validate(sensorDTO, bindingResult);
         if(bindingResult.hasErrors()){
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
