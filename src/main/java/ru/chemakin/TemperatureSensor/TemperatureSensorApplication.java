@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class TemperatureSensorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TemperatureSensorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TemperatureSensorApplication.class, args);
+    }
 
-	@Bean
-	public ModelMapper mapper(){
-		return new ModelMapper();
-	}
+    @Bean
+    public ModelMapper mapper() {
+        return new ModelMapper();
+    }
 }

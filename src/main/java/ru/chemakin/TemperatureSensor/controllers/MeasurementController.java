@@ -3,32 +3,32 @@ package ru.chemakin.TemperatureSensor.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import ru.chemakin.TemperatureSensor.dto.MeasurementDTO;
 import ru.chemakin.TemperatureSensor.dto.SensorDTO;
-import ru.chemakin.TemperatureSensor.models.Sensor;
-import ru.chemakin.TemperatureSensor.services.SensorService;
-import ru.chemakin.TemperatureSensor.util.SensorDTOValidator;
+import ru.chemakin.TemperatureSensor.models.Measurement;
+import ru.chemakin.TemperatureSensor.util.MeasurementErrorResponse;
+import ru.chemakin.TemperatureSensor.util.MeasurementNotCreatedException;
 import ru.chemakin.TemperatureSensor.util.SensorErrorResponse;
 import ru.chemakin.TemperatureSensor.util.SensorNotCreatedException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/sensors")
+@RequestMapping("/measurements")
 @RequiredArgsConstructor
-public class SensorController {
+public class MeasurementController {
     private final ModelMapper mapper;
-    private final SensorService sensorService;
-    private final SensorDTOValidator sensorDTOValidator;
 
-    @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid SensorDTO sensorDTO,
-                                             BindingResult bindingResult) {
-        sensorDTOValidator.validate(sensorDTO, bindingResult);
+    @PostMapping("/add") // TODO sensor json
+    public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementDTO measurementDTO,
+                                          BindingResult bindingResult){
+
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -40,20 +40,21 @@ public class SensorController {
             }
             throw new SensorNotCreatedException(errorMessage.toString());
         } else {
-            sensorService.save(convertToSensor(sensorDTO));
+            System.out.println(measurementDTO);
             return ResponseEntity.ok(HttpStatus.OK);
         }
     }
 
-    @ExceptionHandler
-    private ResponseEntity<SensorErrorResponse> handleException(SensorNotCreatedException exception) {
-        SensorErrorResponse sensorErrorResponse = new SensorErrorResponse(
-                exception.getMessage()
-        );
-        return new ResponseEntity<>(sensorErrorResponse, HttpStatus.BAD_REQUEST);
+    private Measurement convertToMeasurement(MeasurementDTO measurementDTO){
+        return mapper.map(measurementDTO, Measurement.class);
     }
 
-    private Sensor convertToSensor(SensorDTO dto) {
-        return mapper.map(dto, Sensor.class);
+    @ExceptionHandler
+    private ResponseEntity<MeasurementErrorResponse> handleException(MeasurementNotCreatedException exception) {
+        MeasurementErrorResponse measurementErrorResponse = new MeasurementErrorResponse(
+                exception.getMessage()
+        );
+        return new ResponseEntity<>(measurementErrorResponse, HttpStatus.BAD_REQUEST);
     }
+
 }

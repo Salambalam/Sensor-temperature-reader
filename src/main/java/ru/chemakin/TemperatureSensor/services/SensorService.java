@@ -12,12 +12,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SensorService {
     public final SensorRepository sensorRepository;
+
     @Transactional
-    public void save(Sensor sensor){
+    public void save(Sensor sensor) {
         sensorRepository.save(sensor);
     }
 
-    public Optional<Sensor> findByName(String name){
+    public Optional<Sensor> findByName(String name) {
         return sensorRepository.findByName(name);
     }
 
