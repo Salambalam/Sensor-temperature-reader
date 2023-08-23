@@ -1,18 +1,23 @@
 package ru.chemakin.TemperatureSensor.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.chemakin.TemperatureSensor.models.Sensor;
 
 @Data
+@AllArgsConstructor
 public class MeasurementDTO {
 
-    @Size(min = -100, max = 100, message = "The range of values must be between -100 and 100 degrees!")
+    @Min(-100)
+    @Max(100)
+    @NotEmpty
     private double value;
 
-    @NotEmpty(message = "Field \"raining\" not be empty!")
+    @NotNull
     private boolean raining;
-//    @NotEmpty(message = "Field \"sensor\" not be empty!")
-    //private Sensor sensor;
+
+    @NotNull
+    private SensorDTO sensor;
 }

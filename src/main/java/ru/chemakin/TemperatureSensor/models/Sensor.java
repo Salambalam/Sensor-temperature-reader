@@ -24,4 +24,5 @@ public class Sensor {
 
     @OneToMany(mappedBy = "sensor")
     private List<Measurement> measurements;
+
 }

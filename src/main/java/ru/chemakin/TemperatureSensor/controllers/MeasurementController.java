@@ -29,6 +29,8 @@ public class MeasurementController {
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementDTO measurementDTO,
                                           BindingResult bindingResult){
 
+        Measurement measurement = convertToMeasurement(measurementDTO);
+
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -40,7 +42,7 @@ public class MeasurementController {
             }
             throw new SensorNotCreatedException(errorMessage.toString());
         } else {
-            System.out.println(measurementDTO);
+            System.out.println(measurement);
             return ResponseEntity.ok(HttpStatus.OK);
         }
     }
