@@ -1,16 +1,18 @@
 package ru.chemakin.TemperatureSensor.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "measurement")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Measurement {
 
     @Id
@@ -24,13 +26,10 @@ public class Measurement {
     private Sensor sensor;
 
     @Column(name = "value")
-    @NotEmpty(message = "Field \"value\" not be empty!")
-    @Size(min = -100, max = 100, message = "The range of values must be between -100 and 100 degrees!")
     @NotNull
     private double value;
 
     @Column(name = "raining")
-    @NotEmpty(message = "Field \"raining\" not be empty!")
     @NotNull
     private boolean raining;
 

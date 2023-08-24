@@ -4,24 +4,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.chemakin.TemperatureSensor.dto.SensorDTO;
+import ru.chemakin.TemperatureSensor.dto.MeasurementDTO;
 import ru.chemakin.TemperatureSensor.services.SensorService;
 
 @Component
 @RequiredArgsConstructor
-public class SensorDTOValidator implements Validator {
+public class MeasurementsDTOValidator implements Validator {
     private final SensorService sensorService;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(SensorDTO.class);
+        return clazz.equals(MeasurementDTO.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        SensorDTO sensorDTO = (SensorDTO) target;
-        if (sensorService.findByName(sensorDTO.getName()).isPresent()) {
-            errors.rejectValue("name", "", "This name already taken!");
+        MeasurementDTO measurementDTO = (MeasurementDTO) target;
+        if (sensorService.findByName(measurementDTO.getSensor().getName()).isEmpty()) {
+            errors.rejectValue("sensor", "", "Sensor with specified name not found!");
         }
     }
 }

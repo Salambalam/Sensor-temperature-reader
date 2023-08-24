@@ -2,23 +2,23 @@ package ru.chemakin.TemperatureSensor.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.chemakin.TemperatureSensor.models.Sensor;
 
 @Data
 @AllArgsConstructor
 public class MeasurementDTO {
 
-    @Min(-100)
-    @Max(100)
-    @NotEmpty
+    @Min(value = -100, message = "The range of values must be between -100 and 100 degrees!")
+    @Max(value = 100, message = "The range of values must be between -100 and 100 degrees!")
+    @NotNull
     private double value;
 
     @NotNull
     private boolean raining;
 
     @NotNull
-    private SensorDTO sensor;
+    private Sensor sensor;
 }

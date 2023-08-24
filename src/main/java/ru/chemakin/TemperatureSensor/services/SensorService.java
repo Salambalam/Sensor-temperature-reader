@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class SensorService {
-    public final SensorRepository sensorRepository;
+    private final SensorRepository sensorRepository;
 
     @Transactional
     public void save(Sensor sensor) {

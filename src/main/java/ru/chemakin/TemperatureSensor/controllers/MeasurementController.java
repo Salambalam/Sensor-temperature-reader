@@ -9,7 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.chemakin.TemperatureSensor.dto.MeasurementDTO;
 import ru.chemakin.TemperatureSensor.models.Measurement;
+import ru.chemakin.TemperatureSensor.services.MeasurementService;
 import ru.chemakin.TemperatureSensor.util.ErrorHandlingUtils;
+import ru.chemakin.TemperatureSensor.util.MeasurementsDTOValidator;
 import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.MeasurementErrorResponse;
 import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.MeasurementNotCreatedException;
 
@@ -18,19 +20,20 @@ import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.Measurem
 @RequiredArgsConstructor
 public class MeasurementController {
     private final ModelMapper mapper;
+    private final MeasurementService measurementService;
+    private final MeasurementsDTOValidator measurementsDTOValidator;
 
-    @PostMapping("/add") // TODO sensor json
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementDTO measurementDTO,
                                           BindingResult bindingResult) {
 
-        Measurement measurement = convertToMeasurement(measurementDTO);
+        measurementsDTOValidator.validate(measurementDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return ErrorHandlingUtils.formatErrorMessageFromFieldErrors(bindingResult, MeasurementNotCreatedException.class);
-        } else {
-            System.out.println(measurement);
-            return ResponseEntity.ok(HttpStatus.OK);
+            ErrorHandlingUtils.formatErrorMessageFromFieldErrors(bindingResult, MeasurementNotCreatedException.class);
         }
+        measurementService.save(convertToMeasurement(measurementDTO));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 
