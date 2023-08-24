@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class MeasurementService {
     private final MeasurementRepository measurementRepository;
 
-    public void save(Measurement measurement){
+    public void save(Measurement measurement) {
         measurement.setReceivedAt(LocalDateTime.now());
 
     }

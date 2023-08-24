@@ -1,4 +1,4 @@
-package ru.chemakin.TemperatureSensor.util;
+package ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

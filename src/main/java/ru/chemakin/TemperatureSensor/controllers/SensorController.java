@@ -6,16 +6,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.chemakin.TemperatureSensor.dto.SensorDTO;
 import ru.chemakin.TemperatureSensor.models.Sensor;
 import ru.chemakin.TemperatureSensor.services.SensorService;
+import ru.chemakin.TemperatureSensor.util.ErrorHandlingUtils;
 import ru.chemakin.TemperatureSensor.util.SensorDTOValidator;
-import ru.chemakin.TemperatureSensor.util.SensorErrorResponse;
-import ru.chemakin.TemperatureSensor.util.SensorNotCreatedException;
-
-import java.util.List;
+import ru.chemakin.TemperatureSensor.util.sensorExceptionHandlers.SensorErrorResponse;
+import ru.chemakin.TemperatureSensor.util.sensorExceptionHandlers.SensorNotCreatedException;
 
 @RestController
 @RequestMapping("/sensors")
@@ -30,19 +28,10 @@ public class SensorController {
                                              BindingResult bindingResult) {
         sensorDTOValidator.validate(sensorDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessage = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMessage.append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new SensorNotCreatedException(errorMessage.toString());
-        } else {
-            sensorService.save(convertToSensor(sensorDTO));
-            return ResponseEntity.ok(HttpStatus.OK);
+            ErrorHandlingUtils.formatErrorMessageFromFieldErrors(bindingResult, SensorNotCreatedException.class);
         }
+        sensorService.save(convertToSensor(sensorDTO));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @ExceptionHandler

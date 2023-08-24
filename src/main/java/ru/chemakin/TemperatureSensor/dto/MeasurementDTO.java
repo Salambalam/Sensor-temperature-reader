@@ -1,10 +1,11 @@
 package ru.chemakin.TemperatureSensor.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.chemakin.TemperatureSensor.models.Sensor;
 
 @Data
 @AllArgsConstructor
