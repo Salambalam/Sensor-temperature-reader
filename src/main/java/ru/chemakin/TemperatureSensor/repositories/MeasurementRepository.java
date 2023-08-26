@@ -6,4 +6,5 @@ import ru.chemakin.TemperatureSensor.models.Measurement;
 
 @Repository
 public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
+    int countMeasurementByRainingIsTrue();
 }

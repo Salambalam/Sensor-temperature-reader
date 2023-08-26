@@ -15,6 +15,9 @@ import ru.chemakin.TemperatureSensor.util.MeasurementsDTOValidator;
 import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.MeasurementErrorResponse;
 import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.MeasurementNotCreatedException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/measurements")
 @RequiredArgsConstructor
@@ -22,6 +25,18 @@ public class MeasurementController {
     private final ModelMapper mapper;
     private final MeasurementService measurementService;
     private final MeasurementsDTOValidator measurementsDTOValidator;
+
+    @GetMapping
+    public List<MeasurementDTO> getMeasurement() {
+        return measurementService.findAll().stream()
+                .map(this::convertToMeasurementDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/rainyDaysCount")
+    public int rainyDaysCount() {
+        return measurementService.countRainyDays();
+    }
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementDTO measurementDTO,
@@ -39,6 +54,10 @@ public class MeasurementController {
 
     private Measurement convertToMeasurement(MeasurementDTO measurementDTO) {
         return mapper.map(measurementDTO, Measurement.class);
+    }
+
+    private MeasurementDTO convertToMeasurementDTO(Measurement measurement) {
+        return mapper.map(measurement, MeasurementDTO.class);
     }
 
     @ExceptionHandler

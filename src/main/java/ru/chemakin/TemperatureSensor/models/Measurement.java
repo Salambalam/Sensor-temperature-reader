@@ -1,5 +1,6 @@
 package ru.chemakin.TemperatureSensor.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Measurement {
 
     @ManyToOne
     @JoinColumn(name = "sensor_name", referencedColumnName = "name")
+    @JsonBackReference
     @NotNull
     private Sensor sensor;
 

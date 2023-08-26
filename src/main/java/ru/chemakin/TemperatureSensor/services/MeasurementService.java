@@ -7,6 +7,7 @@ import ru.chemakin.TemperatureSensor.models.Measurement;
 import ru.chemakin.TemperatureSensor.repositories.MeasurementRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +26,13 @@ public class MeasurementService {
         measurement.setSensor(sensorService
                 .findByName(measurement.getSensor().getName())
                 .orElse(null));
+    }
+
+    public List<Measurement> findAll() {
+        return measurementRepository.findAll();
+    }
+
+    public int countRainyDays() {
+        return measurementRepository.countMeasurementByRainingIsTrue();
     }
 }
