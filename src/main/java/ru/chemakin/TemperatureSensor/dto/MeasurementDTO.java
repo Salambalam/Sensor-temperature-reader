@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.chemakin.TemperatureSensor.models.Sensor;
 
 @Getter
 @Setter
@@ -24,6 +23,6 @@ public class MeasurementDTO {
     private boolean raining;
 
     @NotNull
-    private Sensor sensor;
+    private SensorDTO sensor;
 
 }

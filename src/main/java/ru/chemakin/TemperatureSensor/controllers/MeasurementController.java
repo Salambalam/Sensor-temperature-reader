@@ -57,6 +57,7 @@ public class MeasurementController {
     }
 
     private MeasurementDTO convertToMeasurementDTO(Measurement measurement) {
+        measurement.getSensor().setMeasurements(null);
         return mapper.map(measurement, MeasurementDTO.class);
     }
 
