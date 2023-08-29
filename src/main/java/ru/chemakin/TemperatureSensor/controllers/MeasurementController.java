@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.chemakin.TemperatureSensor.dto.MeasurementDTO;
+import ru.chemakin.TemperatureSensor.dto.MeasurementsResponse;
 import ru.chemakin.TemperatureSensor.models.Measurement;
 import ru.chemakin.TemperatureSensor.services.MeasurementService;
 import ru.chemakin.TemperatureSensor.util.ErrorHandlingUtils;
@@ -15,7 +16,7 @@ import ru.chemakin.TemperatureSensor.util.MeasurementsDTOValidator;
 import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.MeasurementErrorResponse;
 import ru.chemakin.TemperatureSensor.util.measurementsExceptionHandlers.MeasurementNotCreatedException;
 
-import java.util.List;
+
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,10 +28,10 @@ public class MeasurementController {
     private final MeasurementsDTOValidator measurementsDTOValidator;
 
     @GetMapping
-    public List<MeasurementDTO> getMeasurement() {
-        return measurementService.findAll().stream()
+    public MeasurementsResponse getMeasurement() {
+        return new MeasurementsResponse(measurementService.findAll().stream()
                 .map(this::convertToMeasurementDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/rainyDaysCount")
